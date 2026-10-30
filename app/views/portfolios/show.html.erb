@@ -1,0 +1,193 @@
+
+<div class="max-w-7xl w-full mx-auto px-8 py-12 ">
+
+  <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-5 mb-8">
+
+    <%= render Ui::StatCard::Component.new(
+      title: "NAV Total Portfolio Value",
+      value: number_to_currency(@total_value),
+      icon: "▤",
+      color: "blue",
+      subtitle: "Market value of your current positions"
+    ) %>
+
+    <%= render Ui::StatCard::Component.new(
+      title: "Total Positions",
+      value: @positions_count,
+      icon: "◉",
+      color: "purple",
+      subtitle: "Stocks currently held in your portfolio"
+    ) %>
+
+    <%= render Ui::StatCard::Component.new(
+      title: "Assets to Rebalance",
+      value: @rebalance_count,
+      icon: "⇄",
+      color: "red",
+      subtitle: "Positions with deviation greater than 1%"
+    ) %>
+
+  </div>
+  
+
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
+      <%= render "revenue_overview"%> 
+    <div class="bg-[#0f172a] rounded-3xl p-8 border border-slate-800 shadow-sm">
+
+      <h2 class="text-xl font-bold text-white mb-2">
+        Portfolio Allocation
+      </h2>
+
+      <p class="text-sm text-slate-500 mb-8">
+        Current allocation vs target allocation
+      </p>
+
+      <div class="space-y-6">
+
+        <% @allocation_data.each do |allocation| %>
+
+          <div>
+            <div class="flex justify-between items-center mb-2">
+
+              <span class="text-sm font-semibold text-white">
+                <%= allocation[:stock].ticker %>
+              </span>
+
+              <span class="text-xs text-green-600">
+                Target:
+                <%= number_to_percentage(
+                  allocation[:target_percentage],
+                  precision: 1
+                ) %>
+              </span>
+
+            </div>
+
+            <div class="flex justify-between text-xs text-slate-500 mb-2">
+              <span>Current</span>
+              <span class="font-semibold text-green-600">
+                <%= number_to_percentage(
+                  allocation[:current_percentage],
+                  precision: 2
+                ) %>
+              </span>
+            </div>
+
+            <div class="w-full bg-slate-100 rounded-full h-2">
+              <div
+                class="bg-blue-600 h-2 rounded-full transition-all"
+                style="width: <%= [[allocation[:current_percentage].to_f, 0].max, 100].min %>%">
+              </div>
+            </div>
+
+          </div>
+
+        <% end %>
+
+        <% if @allocation_data.empty? %>
+          <p class="text-sm text-slate-400 text-center py-6">
+            No target allocations configured.
+          </p>
+        <% end %>
+
+      </div>
+
+      <div class="border-t border-slate-100 mt-8 pt-6">
+
+        <div class="flex justify-between text-sm">
+          <span class="text-slate-500">Target allocation</span>
+          <span class="font-bold text-slate-900">
+            <%= number_to_percentage(
+              @target_allocation_total,
+              precision: 2
+            ) %>
+          </span>
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="lg:col-span-2 bg-[#0f172a] rounded-3xl p-8 border border-slate-800 shadow-sm">
+
+      <div class="flex items-center justify-between mb-8">
+        <div>
+          <h2 class="text-2xl font-bold text-white">
+            My Holdings
+          </h2>
+          <p class="text-sm text-white mt-1">
+            Your current investment positions
+          </p>
+        </div>
+      </div>
+
+      <div class="overflow-x-auto">
+        <table class="w-full text-left">
+
+          <thead>
+            <tr class="text-xs uppercase tracking-wider text-white-400 border-b border-slate-800">
+              <th class="pb-4">Stock</th>
+              <th class="pb-4">Quantity</th>
+              <th class="pb-4">Price</th>
+              <th class="pb-4">Market Value</th>
+              <th class="pb-4">Allocation</th>
+            </tr>
+          </thead>
+
+          <tbody class="divide-y divide-black">
+
+           <% Array(@holdings_data).each do |holding| %>
+              <tr class="text-sm">
+
+                <td class="py-5">
+                  <div class="font-bold text-white">
+                    <%= holding[:stock].ticker %>
+                  </div>
+                  <div class="text-xs text-slate-400">
+                    <%= holding[:stock].name %>
+                  </div>
+                </td>
+
+                <td class="py-5 text-white-600">
+                  <%= number_with_precision(
+                    holding[:quantity],
+                    precision: 4,
+                    strip_insignificant_zeros: true
+                  ) %>
+                </td>
+
+                <td class="py-5 text-white">
+                  <%= number_to_currency(holding[:current_price]) %>
+                </td>
+
+                <td class="py-5 font-semibold text-green-600">
+                  <%= number_to_currency(holding[:current_value]) %>
+                </td>
+
+                <td class="py-5">
+                  <span class="font-semibold text-green-600">
+                    <%= number_to_percentage(
+                      holding[:current_percentage],
+                      precision: 2
+                    ) %>
+                  </span>
+                </td>
+
+              </tr>
+            <% end %>
+
+            <% if Array(@holdings_data).empty? %>
+              <tr>
+                <td colspan="5" class="py-10 text-center text-slate-400">
+                  No holdings in this portfolio yet.
+                </td>
+              </tr>
+            <% end %>
+
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+</div>

@@ -6,56 +6,71 @@ class PortfoliosController < ApplicationController
     @holdings = @portfolio.portfolio_holdings.includes(:stock)
     @allocations = @portfolio.portfolio_allocations.includes(:stock)
 
-    @prices = {}
-
-    stocks = (@holdings.map(&:stock) + @allocations.map(&:stock)).uniq
-
-    stocks.each do |stock|
-      @prices[stock.id] = stock.fetch_current_price
-    end
-
-    @total_value = @holdings.sum do |holding|
-      holding.quantity * @prices.fetch(holding.stock_id, 0).to_d
-    end
-
     @holdings_data = @holdings.map do |holding|
       stock = holding.stock
-      price = @prices.fetch(stock.id, 0).to_d
-      value = holding.quantity * price
+
+      current_price = stock.fetch_current_price || 0
+
+      current_value = holding.quantity * current_price
 
       {
         stock: stock,
         quantity: holding.quantity,
-        current_price: price,
-        current_value: value,
-        current_percentage: @total_value.positive? ? (value / @total_value * 100) : 0,
-        target_percentage: @allocations.find {
-          |allocation| allocation.stock_id == stock.id
-        }&.target_percentage || 0
+        current_price: current_price,
+        current_value: current_value,
+        current_percentage: 0
       }
     end
 
-    @allocation_data = @allocations.map do |allocation|
-      holding = @holdings.find {
-        |item| item.stock_id == allocation.stock_id
-      }
+    @total_value = @holdings_data.sum do |holding|
+      holding[:current_value]
+    end
 
-      value = holding ? holding.quantity * @prices.fetch(allocation.stock_id, 0).to_d : 0
+    @holdings_data.each do |holding|
+      holding[:current_percentage] =
+        if @total_value.positive?
+          (holding[:current_value] / @total_value) * 100
+        else
+          0
+        end
+    end
+
+    @stocks = (
+      @holdings.map(&:stock) +
+      @allocations.map(&:stock)
+    ).compact.uniq
+
+    @selected_stock = @stocks.find do |stock|
+      stock.ticker == params[:ticker]
+    end || @stocks.first
+
+    @chart_range = params[:range].presence || "3m"
+
+    @allocation_data = @allocations.map do |allocation|
+      holding = @holdings_data.find do |item|
+        item[:stock].id == allocation.stock_id
+      end
 
       {
         stock: allocation.stock,
         target_percentage: allocation.target_percentage,
-        current_percentage: @total_value.positive? ? value / @total_value * 100 : 0
+        current_percentage: holding ? holding[:current_percentage] : 0
       }
     end
-  end
 
-  def rebalance
-    @rebalance_actions = PortfolioRebalancer.new(@portfolio).call
+    @target_allocation_total = @allocation_data.sum do |allocation|
+      allocation[:target_percentage].to_f
+    end
 
-    respond_to do |format|
-      format.html
-      format.json { render json: @rebalance_actions }
+    @positions_count = @holdings.count do |holding|
+      holding.quantity.positive?
+    end
+
+    @rebalance_count = @allocation_data.count do |allocation|
+      (
+        allocation[:current_percentage] -
+        allocation[:target_percentage].to_f
+      ).abs > 1
     end
   end
 
@@ -67,20 +82,21 @@ class PortfoliosController < ApplicationController
 
     return head :not_found unless stock
 
-    prices = FmpClient.fetch_historical_prices(
-      stock.ticker,
-      params[:limit].presence || 90
-    )
+    chart_data = StockChartData.new(
+      stock,
+      range: params[:range]
+    ).call
 
-    render json: prices.reverse.map { |price|
-      {
-        time: price["date"],
-        open: price["open"],
-        high: price["high"],
-        low: price["low"],
-        close: price["close"]
-      }
-    }
+    render json: chart_data
+  end
+
+  def rebalance
+    @rebalance_actions = PortfolioRebalancer.new(@portfolio).call
+
+    respond_to do |format|
+      format.html
+      format.json { render json: @rebalance_actions }
+    end
   end
 
   private
