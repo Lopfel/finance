@@ -7,7 +7,7 @@ class Portfolio < ApplicationRecord
   has_many :portfolio_allocations, dependent: :destroy
   has_many :target_stocks, through: :portfolio_allocations, source: :stock
 
-  validate :validate_total_allocation_percentage
+  accepts_nested_attributes_for :portfolio_allocations, allow_destroy: true
 
   validate :validate_total_allocation_percentage
 
@@ -18,9 +18,19 @@ class Portfolio < ApplicationRecord
   private
 
   def validate_total_allocation_percentage
-    total = portfolio_allocations.sum(:target_percentage)
-    unless total == 100.0
-      errors.add(:base, "La suma de los porcentajes de asignación debe ser 100% (actual: #{total}%)")
+    total = portfolio_allocations.to_a.sum do |allocation|
+      allocation.target_percentage.to_d
     end
+
+    unless (total - 100).abs < 0.0001
+      errors.add(
+        :base,
+        "Total allocation must equal 100% (current: #{total}%)"
+      )
+    end
+  end
+
+  def set_portfolio
+    @portfolio = Portfolio.find(params[:id])
   end
 end
