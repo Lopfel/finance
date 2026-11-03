@@ -60,6 +60,7 @@ class PortfolioRebalancer
         estimated_amount: difference.abs.round(2),
         current_price: price,
         current_value: current_value.round(2),
+        current_percentage: (current_value / total_value * 100).round(2),
         target_value: target_value.round(2),
         target_percentage: target_percentage
       }

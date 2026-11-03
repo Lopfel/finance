@@ -1,7 +1,6 @@
+<div class="max-w-7xl w-full mx-auto px-4 sm:px-8 pt-5 pb-10">
 
-<div class="max-w-7xl w-full mx-auto px-8 py-12 ">
-
-  <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-5 mb-8">
+  <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-5 mb-6">
 
     <%= render Ui::StatCard::Component.new(
       title: "NAV Total Portfolio Value",
@@ -108,78 +107,140 @@
 
     </div>
 
+    
     <div class="lg:col-span-2 bg-[#0f172a] rounded-3xl p-8 border border-slate-800 shadow-sm">
 
       <div class="flex items-center justify-between mb-8">
-        <div>
-          <h2 class="text-2xl font-bold text-white">
-            My Holdings
-          </h2>
-          <p class="text-sm text-white mt-1">
-            Your current investment positions
-          </p>
-        </div>
+          <div>
+            <h2 class="text-2xl font-bold text-white">
+              My Holdings
+            </h2>
+            <p class="text-sm text-slate-400 mt-1">
+              Your current investment positions
+            </p>
+          </div>
+
+          <%=  button_to rebalance_portfolio_path(@portfolio), method: :post,
+              class: "inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-sm font-semibold transition-colors" do %>
+
+            <svg class="w-4 h-4" fill="none" stroke="currentColor"
+                viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M4 4v5h5M20 20v-5h-5M5 9a7 7 0 0112-3l3 3M19 15a7 7 0 01-12 3l-3-3"/>
+            </svg>
+
+            Rebalance Portfolio
+          <% end %>
       </div>
 
       <div class="overflow-x-auto">
         <table class="w-full text-left">
 
           <thead>
-            <tr class="text-xs uppercase tracking-wider text-white-400 border-b border-slate-800">
-              <th class="pb-4">Stock</th>
-              <th class="pb-4">Quantity</th>
-              <th class="pb-4">Price</th>
-              <th class="pb-4">Market Value</th>
-              <th class="pb-4">Allocation</th>
+            <tr class="text-xs uppercase tracking-wider text-slate-400 border-b border-slate-800">
+              <th class="pb-4 pr-6">Stock</th>
+              <th class="pb-4 pr-6">Quantity</th>
+              <th class="pb-4 pr-6">Price</th>
+              <th class="pb-4 pr-6">Market Value</th>
+              <th class="pb-4 pr-6">Current</th>
+              <th class="pb-4 pr-6">Target</th>
+              <th class="pb-4 pr-6">Action</th>
             </tr>
           </thead>
 
-          <tbody class="divide-y divide-black">
+          <tbody class="divide-y divide-slate-800">
 
-           <% Array(@holdings_data).each do |holding| %>
+            <% @rebalance_actions.each do |ticker, recommendation| %>
+
+              <% action = recommendation[:action] %>
+
+              <% action_styles = {
+                buy: "bg-emerald-500/10 text-emerald-400 border-emerald-500/20",
+                sell: "bg-rose-500/10 text-rose-400 border-rose-500/20",
+                hold: "bg-slate-500/10 text-slate-400 border-slate-500/20"
+              } %>
+
               <tr class="text-sm">
 
-                <td class="py-5">
+                <!-- Stock -->
+                <td class="py-5 pr-6">
                   <div class="font-bold text-white">
-                    <%= holding[:stock].ticker %>
+                    <%= ticker %>
                   </div>
                   <div class="text-xs text-slate-400">
-                    <%= holding[:stock].name %>
+                    <%= recommendation[:stock_name] %>
                   </div>
                 </td>
 
-                <td class="py-5 text-white-600">
+                <!-- Current Quantity -->
+                <td class="py-5 pr-6 text-slate-300">
                   <%= number_with_precision(
-                    holding[:quantity],
+                    recommendation[:current_shares],
                     precision: 4,
                     strip_insignificant_zeros: true
                   ) %>
                 </td>
 
-                <td class="py-5 text-white">
-                  <%= number_to_currency(holding[:current_price]) %>
+                <!-- Current Price -->
+                <td class="py-5 pr-6 text-white">
+                  <%= number_to_currency(recommendation[:current_price]) %>
                 </td>
 
-                <td class="py-5 font-semibold text-green-600">
-                  <%= number_to_currency(holding[:current_value]) %>
+                <!-- Market Value -->
+                <td class="py-5 pr-6 font-semibold text-white">
+                  <%= number_to_currency(recommendation[:current_value]) %>
                 </td>
 
-                <td class="py-5">
-                  <span class="font-semibold text-green-600">
-                    <%= number_to_percentage(
-                      holding[:current_percentage],
-                      precision: 2
-                    ) %>
-                  </span>
+                <!-- Current Allocation -->
+                <td class="py-5 pr-6 text-slate-300">
+                  <%= number_to_percentage(
+                    recommendation[:current_percentage],
+                    precision: 2
+                  ) %>
+                </td>
+
+                <!-- Target Allocation -->
+                <td class="py-5 pr-6 text-slate-300">
+                  <%= number_to_percentage(
+                    recommendation[:target_percentage],
+                    precision: 2
+                  ) %>
+                </td>
+
+                <!-- Recommendation -->
+                <td class="py-5 pr-6">
+                  <div class="flex flex-col items-start gap-1">
+
+                    <span class="inline-flex items-center px-3 py-1 rounded-full border text-xs font-bold <%= action_styles.fetch(action) %>">
+                      <%= action.to_s.upcase %>
+                    </span>
+
+                    <% if action != :hold %>
+                      <span class="text-xs text-slate-400 whitespace-nowrap">
+                        <%= action == :buy ? "+" : "-" %><%= number_with_precision(
+                          recommendation[:shares_difference],
+                          precision: 4,
+                          strip_insignificant_zeros: true
+                        ) %> shares
+                      </span>
+
+                      <span class="text-xs text-slate-400 whitespace-nowrap">
+                        <%= number_to_currency(recommendation[:estimated_amount]) %>
+                      </span>
+                    <% end %>
+
+                  </div>
                 </td>
 
               </tr>
+
             <% end %>
 
-            <% if Array(@holdings_data).empty? %>
+            <% if @rebalance_actions.blank? %>
               <tr>
-                <td colspan="5" class="py-10 text-center text-slate-400">
-                  No holdings in this portfolio yet.
+                <td colspan="7" class="py-10 text-center text-slate-400">
+                  No rebalancing recommendations available.
                 </td>
               </tr>
             <% end %>

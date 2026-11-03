@@ -68,3 +68,5 @@ group :test do
 end
 
 gem "view_component", "~> 4.20"
+
+gem "bcrypt", "~> 3.1"

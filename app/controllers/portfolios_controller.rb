@@ -72,6 +72,8 @@ class PortfoliosController < ApplicationController
         allocation[:target_percentage].to_f
       ).abs > 1
     end
+
+    @rebalance_actions = PortfolioRebalancer.new(@portfolio).call
   end
 
   def historical_prices
@@ -94,14 +96,29 @@ class PortfoliosController < ApplicationController
     @rebalance_actions = PortfolioRebalancer.new(@portfolio).call
 
     respond_to do |format|
-      format.html
-      format.json { render json: @rebalance_actions }
+      format.html do
+        redirect_to portfolio_path(@portfolio),
+                    notice: "Portfolio rebalancing analysis completed."
+      end
+
+      format.json do
+        render json: @rebalance_actions
+      end
     end
   end
 
   private
 
   def set_portfolio
-    @portfolio = Portfolio.find(params[:id])
+    @portfolio = if params[:id].present?
+      current_user.portfolios.find_by(id: params[:id])
+    else
+      current_user.portfolios.first
+    end
+
+    return if @portfolio
+
+    redirect_to new_user_session_path,
+                alert: "No tienes un portafolio disponible."
   end
 end

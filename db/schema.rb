@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_10_29_183427) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_31_172537) do
   create_table "portfolio_allocations", force: :cascade do |t|
     t.integer "portfolio_id", null: false
     t.integer "stock_id", null: false
@@ -54,6 +54,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_29_183427) do
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "email"
+    t.string "password_digest"
   end
 
   add_foreign_key "portfolio_allocations", "portfolios"

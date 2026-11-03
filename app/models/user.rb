@@ -1,4 +1,7 @@
 class User < ApplicationRecord
-  validates :name, presence: true
-  validates :email, presence: true
+  has_many :portfolios, dependent: :destroy
+
+  has_secure_password
+
+  validates :email, presence: true, uniqueness: true
 end
