@@ -1,0 +1,48 @@
+<div class="lg:col-span-2 min-w-0 bg-[#0f172a] rounded-3xl p-6 md:p-8 border border-slate-800 shadow-sm flex flex-col">
+
+  <% if selected_stock.present? %>
+
+    <%= render Ui::MarketOverview::Header::Component.new(
+      portfolio: portfolio,
+      stocks: stocks,
+      selected_stock: selected_stock
+    ) %>
+
+    <div
+      data-controller="candlestick"
+      data-candlestick-url-value="<%= chart_url %>"
+      class="w-full min-w-0">
+
+      <%= render Ui::MarketOverview::PriceSummary::Component.new(
+        chart_range: chart_range
+      ) %>
+
+      <%= render Ui::MarketOverview::Statistics::Component.new %>
+
+      <div
+        data-candlestick-target="chart"
+        class="w-full min-w-0 h-[380px]">
+      </div>
+
+      <p
+        data-candlestick-target="message"
+        class="text-sm text-slate-400 mt-3">
+      </p>
+
+    </div>
+
+  <% else %>
+   <div class="py-16 text-center">
+
+      <h2 class="text-xl font-bold text-slate-800">
+        <%= t("market_overview.empty") %>
+      </h2>
+
+      <p class="text-slate-500 mt-2">
+        <%= t("market_overview.empty_description") %>
+      </p>
+
+    </div>
+  <% end %>
+
+</div>

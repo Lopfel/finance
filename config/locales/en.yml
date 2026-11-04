@@ -52,3 +52,19 @@ en:
     title: "Portfolio Allocation"
     description: "The distribution of your investments"
     empty: "No allocations assigned"
+  
+  market_overview:
+    header:
+      title: "Market Overview"
+      subtitle: "Historical stock performance"
+      empty: "No data available"
+    price_summary:
+      last_closing_price: "Last Closing Price"
+      price_change: "Price Change"
+      percentage_change: "Percentage Change"
+    statistics:
+      market_cap: "Market Cap"
+      pe_ratio: "P/E Ratio"
+      dividend_yield: "Dividend Yield"
+      empty: "No statistics available"
+      empty_description: "No statistics available for this stock at this time."
