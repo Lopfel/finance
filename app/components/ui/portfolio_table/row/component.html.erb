@@ -1,0 +1,60 @@
+<tr class="text-xs uppercase tracking-wider text-slate-400 border-b border-slate-800">
+  <th 
+  <td class="py-5 pr-6">
+    <div class="font-bold text-white">
+      <%= ticker %>
+    </div>
+    <div class="text-xs text-slate-400">
+      <%= recommendation[:stock_name] %>
+    </div>
+  </td>
+
+  <td class="py-5 pr-6 text-slate-300">
+    <%= number_with_precision(
+      recommendation[:current_shares],
+      precision: 4,
+      strip_insignificant_zeros: true
+    ) %>
+  </td>
+
+  <td class="py-5 pr-6 text-white">
+    <%= number_to_currency(recommendation[:current_price]) %>
+  </td>
+
+  <td class="py-5 pr-6 font-semibold text-white">
+    <%= number_to_currency(recommendation[:current_value]) %>
+  </td>
+
+  <td class="py-5 pr-6 text-slate-300">
+    <%= number_to_percentage(recommendation[:current_percentage], precision: 2) %>
+  </td>
+
+  <td class="py-5 pr-6 text-slate-300">
+    <%= number_to_percentage(recommendation[:target_percentage], precision: 2) %>
+  </td>
+
+  <td class="py-5 pr-6">
+    <div class="flex flex-col items-start gap-1">
+
+      <span class="inline-flex items-center px-3 py-1 rounded-full border text-xs font-bold <%= action_styles.fetch(action) %>">
+        <%= action.to_s.upcase %>
+      </span>
+
+      <% if action != :hold %>
+        <span class="text-xs text-slate-400 whitespace-nowrap">
+          <%= action == :buy ? "+" : "-" %><%= number_with_precision(
+            recommendation[:shares_difference],
+            precision: 4,
+            strip_insignificant_zeros: true
+          ) %> shares
+        </span>
+
+        <span class="text-xs text-slate-400 whitespace-nowrap">
+          <%= number_to_currency(recommendation[:estimated_amount]) %>
+        </span>
+      <% end %>
+
+    </div>
+  </td>
+
+</tr>

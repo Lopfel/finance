@@ -28,4 +28,27 @@
 #       enabled: "ON"
 
 en:
-  hello: "Hello world"
+  header:
+    title: "Finance"
+    subtitle: "Investment dashboard"
+    guest: "Guest"
+    portfolio: "Portfolio"
+
+  holding:
+    title: "My Holdings"
+    subtitle: "Your current investment positions"
+    rebalance: "Rebalance Portfolio"
+    no_rebalance_recommendations: "No rebalancing recommendations available."
+    stock: "Stock"
+    quantity: "Quantity"
+    current_price: "Current Price"
+    market_value: "Market Value"
+    current_allocation: "Current Allocation"
+    target_allocation: "Target Allocation"
+    recommendation: "Recommendation"
+    empty: "No roles assigned"
+
+  portfolio_allocation:
+    title: "Portfolio Allocation"
+    description: "The distribution of your investments"
+    empty: "No allocations assigned"

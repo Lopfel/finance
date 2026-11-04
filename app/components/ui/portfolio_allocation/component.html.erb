@@ -1,0 +1,67 @@
+<div class="bg-[#0f172a] rounded-3xl p-8 border border-slate-800 shadow-sm">
+  <div class="flex items-center justify-between mb-2">
+    <h2 class="text-xl font-bold text-white">
+      <%= t("portfolio_allocation.title") %>
+    </h2>
+
+    <span class="text-xs text-slate-400">
+      <%= allocations.size %> <%= t("portfolio_allocation.assets") %>
+    </span>
+  </div>
+
+  <p class="text-sm text-slate-400 mb-8">
+    <%= t("portfolio_allocation.description") %>
+  </p>
+
+  <div class="flex items-center gap-5 mb-8">
+    <div class="flex items-center gap-2">
+      <span class="w-2.5 h-2.5 rounded-full bg-blue-500"></span>
+      <span class="text-xs text-slate-400">
+        <%= t("portfolio_allocation.current") %>
+      </span>
+    </div>
+
+    <div class="flex items-center gap-2">
+      <span class="w-2.5 h-2.5 rounded-full bg-slate-500"></span>
+      <span class="text-xs text-slate-400">
+        <%= t("portfolio_allocation.target") %>
+      </span>
+    </div>
+  </div>
+
+  <div class="space-y-8">
+    <% if allocations.any? %>
+      <% allocations.each do |allocation| %>
+        <%= render Ui::PortfolioAllocation::Item::Component.new(
+          allocation: allocation
+        ) %>
+      <% end %>
+    <% else %>
+      <p class="text-sm text-slate-400 text-center py-6">
+        <%= t("portfolio_allocation.no_data") %>
+      </p>
+    <% end %>
+  </div>
+
+  <div class="border-t border-slate-800 mt-8 pt-6 space-y-4">
+    <div class="flex justify-between text-sm">
+      <span class="text-slate-400">
+        <%= t("portfolio_allocation.total_target_allocation") %>
+      </span>
+
+      <span class="font-bold text-white">
+        <%= number_to_percentage(target_total, precision: 2) %>
+      </span>
+    </div>
+
+    <div class="flex justify-between text-sm">
+      <span class="text-slate-400">
+        <%= t("portfolio_allocation.positions_to_rebalance") %>
+      </span>
+
+      <span class="font-bold text-white">
+        <%= rebalance_count %>
+      </span>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,25 @@
+es:
+  header:
+    title: "Finanzas"
+    subtitle: "Panel de Inversiones"
+    guest: "Invitado"
+    portfolio: "Portafolio"
+
+  holding:
+    title: "Mis Acciones"
+    subtitle: "Tus posiciones de inversión actuales"
+    rebalance: "Rebalancear Portafolio"
+    no_rebalance_recommendations: "No hay recomendaciones de rebalanceo disponibles."  
+    stock: "Acción"
+    quantity: "Cantidad"
+    current_price: "Precio Actual"
+    market_value: "Valor de Mercado"
+    current_allocation: "Asignación Actual"
+    target_allocation: "Asignación Objetivo"
+    recommendation: "Recomendación"
+    empty: "No hay roles asignados"
+  
+  portfolio_allocation:
+    title: "Asignación de Portafolio"
+    description: "La asignación de portafolio es la distribución de tus inversiones"
+    empty: "No hay asignaciones asignadas"

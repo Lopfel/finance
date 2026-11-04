@@ -1,5 +1,6 @@
 
 class PortfoliosController < ApplicationController
+  before_action :authenticate_user!
   before_action :set_portfolio
 
   def show
@@ -46,15 +47,16 @@ class PortfoliosController < ApplicationController
 
     @chart_range = params[:range].presence || "3m"
 
-    @allocation_data = @allocations.map do |allocation|
-      holding = @holdings_data.find do |item|
-        item[:stock].id == allocation.stock_id
-      end
 
+    @rebalance_actions = PortfolioRebalancer.new(@portfolio).call
+
+    @allocation_data = @rebalance_actions.map do |ticker, recommendation|
       {
-        stock: allocation.stock,
-        target_percentage: allocation.target_percentage,
-        current_percentage: holding ? holding[:current_percentage] : 0
+        ticker: ticker,
+        stock_name: recommendation[:stock_name],
+        current_percentage: recommendation[:current_percentage],
+        target_percentage: recommendation[:target_percentage],
+        action: recommendation[:action]
       }
     end
 
@@ -62,18 +64,13 @@ class PortfoliosController < ApplicationController
       allocation[:target_percentage].to_f
     end
 
+    @rebalance_count = @allocation_data.count do |allocation|
+      allocation[:action] != :hold
+    end
+
     @positions_count = @holdings.count do |holding|
       holding.quantity.positive?
     end
-
-    @rebalance_count = @allocation_data.count do |allocation|
-      (
-        allocation[:current_percentage] -
-        allocation[:target_percentage].to_f
-      ).abs > 1
-    end
-
-    @rebalance_actions = PortfolioRebalancer.new(@portfolio).call
   end
 
   def historical_prices
