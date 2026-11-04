@@ -1,0 +1,55 @@
+<header
+  class="h-20 bg-[#0f172a] border-b border-slate-700/60 fixed top-0 w-full z-50 shadow-lg shadow-slate-950/10">
+  <div class="max-w-[2560px] mx-auto h-full px-4 sm:px-8 flex items-center justify-between gap-6">
+
+    <div class="flex items-center gap-3 shrink-0">
+      <div class="w-10 h-10 rounded-xl bg-blue-500/10 border border-blue-400/20 flex items-center justify-center">
+        <%= image_tag "/images/icons/trending_up.svg", class: "w-5 h-5 invert", alt: "Icon" %>
+
+      </div>
+
+      <div class="hidden sm:block">
+        <span class="text-white font-bold text-lg tracking-tight"><%= t('header.title') %></span>
+        <p class="text-slate-400 text-[10px] uppercase tracking-[0.2em]"><%= t('header.subtitle') %></p>
+      </div>
+    </div>
+
+    <nav class="hidden lg:flex items-center gap-2">
+      <% nav_items.each do |label, path| %>
+        <%= render Layout::NavLink::Component.new(label: label, path: path) %>
+      <% end %>
+    </nav>
+
+    <div class="flex items-center gap-4 shrink-0" data-menu-target="hideOnOpen">
+
+      <div class="hidden sm:flex items-center gap-3 pl-4 border-l border-slate-700">
+        <div class="w-9 h-9 rounded-full bg-slate-700 border border-slate-600 flex items-center justify-center text-white font-semibold text-xs">
+          <%= user.name.to_s.first(2).upcase %>
+        </div>
+
+        <div class="hidden md:block">
+          <% if user.name %>
+            <p class="text-sm font-medium text-slate-100">
+              <%= user.name %>
+            </p>
+          <% else %>
+            <p class="text-sm font-medium text-slate-100">
+              <%= t("layouts.header.guest") %>
+            </p>
+          <% end %>
+        </div>
+      </div>
+
+      <div class="h-8 w-px bg-slate-700 hidden sm:block"></div>
+
+      <%= link_to helpers.logout_path,
+          data: { "turbo-method": :delete },
+          title: "Cerrar sesión",
+          class: "flex items-center justify-center w-10 h-10 rounded-xl text-slate-400 hover:text-red-400 hover:bg-red-400/10 transition-all duration-200" do %>
+
+        <%= image_tag "/images/navigation/singout.svg", class: "h-5 w-5 brightness-0 invert opacity-60 hover:opacity-100" %>
+      <% end %>
+
+    </div>
+  </div>
+</header>
