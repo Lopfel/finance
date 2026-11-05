@@ -18,6 +18,7 @@ es:
     target_allocation: "Asignación Objetivo"
     recommendation: "Recomendación"
     empty: "No hay roles asignados"
+    price: "Precio"
   
   portfolio_allocation:
     title: "Asignación de Portafolio"
@@ -43,3 +44,9 @@ es:
       dividend_yield: "Rendimiento de dividendos"
     empty: "No hay estadísticas disponibles"
     empty_description: "No hay estadísticas disponibles para esta acción en este momento."
+  
+  sessions:
+    title: "Finance"
+    login: "Entrar"
+    password: "Contraseña"
+    email: "Correo electrónico"

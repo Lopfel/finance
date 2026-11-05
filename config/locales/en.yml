@@ -47,6 +47,7 @@ en:
     target_allocation: "Target Allocation"
     recommendation: "Recommendation"
     empty: "No roles assigned"
+    price: "Price"
 
   portfolio_allocation:
     title: "Portfolio Allocation"
@@ -72,3 +73,9 @@ en:
       dividend_yield: "Dividend Yield"
     empty: "No statistics available"
     empty_description: "No statistics available for this stock at this time."
+  
+  sessions:
+    title: "Finance"
+    login: "Login"
+    password: "Password"
+    email: "Email"
