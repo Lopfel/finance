@@ -77,4 +77,3 @@ gem "bcrypt", "~> 3.1"
 gem "rspec-rails", "~> 8.0"
 
 gem "rails-controller-testing", "~> 1.0"
-

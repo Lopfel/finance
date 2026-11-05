@@ -2,6 +2,8 @@
 
 A portfolio management application built with Ruby on Rails that allows users to track stock investments, define target asset allocations, monitor market performance, and calculate the trades required to rebalance their portfolios.
 
+<img src="docs/screenshots/index.png" alt="Stockify Demo">
+
 ## Features
 
 - **Portfolio Management:** Manage a portfolio containing multiple stock holdings.
