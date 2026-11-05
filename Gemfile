@@ -65,8 +65,13 @@ group :test do
   # Use system testing [https://guides.rubyonrails.org/testing.html#system-testing]
   gem "capybara"
   gem "selenium-webdriver"
+  gem "factory_bot_rails", "~> 6.5"
+  gem "faker", "~> 3.8"
+  gem "shoulda-matchers", "~> 8.0"
 end
 
 gem "view_component", "~> 4.20"
 
 gem "bcrypt", "~> 3.1"
+
+gem "rspec-rails", "~> 8.0"
