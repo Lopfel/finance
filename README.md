@@ -109,7 +109,7 @@ Clone the repository:
 
 ```bash
 git clone https://github.com/Lopfel/finance.git
-cd finance.
+cd finance
 ```
 
 Install the dependencies:
