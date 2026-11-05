@@ -5,7 +5,7 @@ module Portfolios
     end
 
     def call
-      rebalance_actions = PortfolioRebalancer.new(@portfolio).call
+      rebalance_actions = Portfolios::PortfolioRebalancer.new(@portfolio).call
       allocation_data = build_allocation_data(rebalance_actions)
 
       {

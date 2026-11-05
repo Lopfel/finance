@@ -1,4 +1,3 @@
-
 require "net/http"
 require "json"
 
@@ -58,10 +57,9 @@ class FmpClient
 
     data.first(limit)
   rescue StandardError => e
-    Rails.logger.error("[FMP] Historical error: #{e.class} - #{e.message}")
+    Rails.logger.error("[FmpClient] Historical error: #{e.class} - #{e.message}")
     []
   end
-
 
   def self.fetch_quote(ticker)
     key = api_key
@@ -92,7 +90,7 @@ class FmpClient
     data = JSON.parse(response.body)
     data.is_a?(Array) ? data.first : nil
   rescue StandardError => e
-    Rails.logger.error("[FMP] Quote error: #{e.class} - #{e.message}")
+    Rails.logger.error("[FmpClient] Quote error: #{e.class} - #{e.message}")
     nil
   end
 end
