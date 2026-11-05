@@ -1,0 +1,42 @@
+<div class="flex flex-wrap items-end justify-between gap-4 mb-6">
+
+  <div>
+    <p class="text-xs uppercase tracking-wider font-semibold text-white">
+      <%= t("market_overview.price_summary.last_closing_price") %>
+    </p>
+
+    <div class="flex items-center gap-3 mt-2">
+
+      <span
+        data-candlestick-target="price"
+        class="text-3xl font-bold text-white">
+        --
+      </span>
+
+      <span
+        data-candlestick-target="change"
+        class="text-sm font-semibold px-3 py-1 rounded-full bg-slate-100">
+        --
+      </span>
+
+    </div>
+  </div>
+
+  <div class="flex gap-2">
+
+    <% RANGES.each do |range| %>
+      <button
+        type="button"
+        data-range="<%= range %>"
+        data-action="click->candlestick#changeRange"
+        aria-pressed="<%= chart_range == range %>"
+        class="px-3 py-2 rounded-lg text-xs font-bold border border-slate-800 text-slate-400 hover:bg-blue-600 hover:text-white transition">
+
+        <%= range.upcase %>
+
+      </button>
+    <% end %>
+
+  </div>
+
+</div>

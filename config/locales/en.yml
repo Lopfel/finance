@@ -28,4 +28,54 @@
 #       enabled: "ON"
 
 en:
-  hello: "Hello world"
+  header:
+    title: "Finance"
+    subtitle: "Investment dashboard"
+    guest: "Guest"
+    portfolio: "Portfolio"
+
+  holding:
+    title: "My Holdings"
+    subtitle: "Your current investment positions"
+    rebalance: "Rebalance Portfolio"
+    no_rebalance_recommendations: "No rebalancing recommendations available."
+    stock: "Stock"
+    quantity: "Quantity"
+    current_price: "Current Price"
+    market_value: "Market Value"
+    current_allocation: "Current Allocation"
+    target_allocation: "Target Allocation"
+    recommendation: "Recommendation"
+    empty: "No roles assigned"
+    price: "Price"
+
+  portfolio_allocation:
+    title: "Portfolio Allocation"
+    description: "The distribution of your investments"
+    empty: "No allocations assigned"
+    target_allocation: "Target Allocation"
+    current_allocation: "Current Allocation"
+    assets: "Assets"
+    no_data: "No data available"
+  
+  market_overview:
+    header:
+      title: "Market Overview"
+      subtitle: "Historical stock performance"
+      empty: "No data available"
+    price_summary:
+      last_closing_price: "Last Closing Price"
+      price_change: "Price Change"
+      percentage_change: "Percentage Change"
+    statistics:
+      market_cap: "Market Cap"
+      pe_ratio: "P/E Ratio"
+      dividend_yield: "Dividend Yield"
+    empty: "No statistics available"
+    empty_description: "No statistics available for this stock at this time."
+  
+  sessions:
+    title: "Finance"
+    login: "Login"
+    password: "Password"
+    email: "Email"

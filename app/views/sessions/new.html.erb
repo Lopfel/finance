@@ -1,0 +1,26 @@
+<div class="max-w-md mx-auto mt-20 p-8 bg-white rounded-xl shadow">
+  <h1 class="text-2xl font-bold mb-6 text-black text-center">
+   <%= t("sessions.title")%>
+  </h1>
+
+  <%= form_with url: login_path, method: :post do |form| %>
+    <div class="mb-4 text-black">
+      <%= form.label :email, t("sessions.email") %>
+
+      <%= form.email_field :email,
+          required: true,
+          class: "w-full border rounded-lg p-3 mt-1" %>
+    </div>
+
+    <div class="mb-6 text-black">
+      <%= form.label :password, t( "session.password") %>
+
+      <%= form.password_field :password,
+          required: true,
+          class: "w-full border rounded-lg p-3 mt-1" %>
+    </div>
+
+    <%= form.submit t("sessions.login"),
+        class: "w-full bg-blue-600 text-white p-3 rounded-lg hover:bg-blue-700 cursor-pointer" %>
+  <% end %>
+</div>

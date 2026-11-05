@@ -19,11 +19,17 @@
     <link rel="apple-touch-icon" href="/icon.png">
 
     <%# Includes all stylesheet files in app/assets/stylesheets %>
+    <script
+      src="https://unpkg.com/lightweight-charts@4.2.3/dist/lightweight-charts.standalone.production.js">
+    </script>
     <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
   </head>
 
-  <body>
+  <body class="bg-gray-900 text-white min-h-screen flex flex-col">
+    <%= render Layout::Header::Component.new(
+        user: current_user,
+      ) %>
     <main class="container mx-auto mt-28 px-5 flex">
       <%= yield %>
     </main>

@@ -1,0 +1,48 @@
+<div class="max-w-7xl w-full mx-auto px-4 sm:px-8 pt-5 pb-10">
+
+  <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-5 mb-6">
+
+    <%= render Ui::StatCard::Component.new(
+      title: "NAV Total Portfolio Value",
+      value: number_to_currency(@total_value),
+      icon: "▤",
+      color: "blue",
+      subtitle: "Market value of your current positions"
+    ) %>
+
+    <%= render Ui::StatCard::Component.new(
+      title: "Total Positions",
+      value: @positions_count,
+      icon: "◉",
+      color: "purple",
+      subtitle: "Stocks currently held in your portfolio"
+    ) %>
+
+    <%= render Ui::StatCard::Component.new(
+      title: "Assets to Rebalance",
+      value: @rebalance_count,
+      icon: "⇄",
+      color: "red",
+      subtitle: "Positions with deviation greater than 1%"
+    ) %>
+
+  </div>
+  
+
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
+    <%= render Ui::MarketOverview::Component.new(
+      portfolio: @portfolio,
+      stocks: @stocks,
+      selected_stock: @selected_stock,
+      chart_range: @chart_range
+    ) %>
+
+    <%= render Ui::PortfolioAllocation::Component.new(
+      allocations: @allocation_data,
+      target_total: @target_allocation_total,
+      rebalance_count: @rebalance_count
+    ) %>
+
+    <%= render "holdings_table" %>
+  </div>
+</div>
