@@ -65,7 +65,7 @@ class PortfoliosController < ApplicationController
 
     return if @portfolio
 
-    redirect_to new_user_session_path,
-                alert: "No tienes un portafolio disponible."
+    redirect_to login_path,
+                alert: "You are not authorized to access this portfolio."
   end
 end
