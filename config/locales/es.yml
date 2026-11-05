@@ -23,6 +23,10 @@ es:
     title: "Asignación de Portafolio"
     description: "La asignación de portafolio es la distribución de tus inversiones"
     empty: "No hay asignaciones asignadas"
+    current_allocation: "Asignación Actual"
+    target_allocation: "Asignación Objetivo"
+    assets: "Activos"
+    no_data: "No hay datos disponibles"
 
   market_overview:
     header:
@@ -37,5 +41,5 @@ es:
       market_cap: "Capitalización de mercado"
       pe_ratio: "Relación P/E"
       dividend_yield: "Rendimiento de dividendos"
-      empty: "No hay estadísticas disponibles"
-      empty_description: "No hay estadísticas disponibles para esta acción en este momento."
+    empty: "No hay estadísticas disponibles"
+    empty_description: "No hay estadísticas disponibles para esta acción en este momento."

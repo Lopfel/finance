@@ -52,6 +52,10 @@ en:
     title: "Portfolio Allocation"
     description: "The distribution of your investments"
     empty: "No allocations assigned"
+    target_allocation: "Target Allocation"
+    current_allocation: "Current Allocation"
+    assets: "Assets"
+    no_data: "No data available"
   
   market_overview:
     header:
@@ -66,5 +70,5 @@ en:
       market_cap: "Market Cap"
       pe_ratio: "P/E Ratio"
       dividend_yield: "Dividend Yield"
-      empty: "No statistics available"
-      empty_description: "No statistics available for this stock at this time."
+    empty: "No statistics available"
+    empty_description: "No statistics available for this stock at this time."
