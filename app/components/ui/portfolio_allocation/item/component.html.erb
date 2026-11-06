@@ -1,0 +1,41 @@
+<div>
+  <div class="mb-4">
+    <span class="text-sm font-bold text-white">
+      <%= ticker %>
+    </span>
+
+    <p class="text-xs text-slate-400">
+      <%= stock_name %>
+    </p>
+  </div>
+
+  <div class="flex justify-between text-xs mb-2">
+    <span class="text-slate-400">
+      <%= t("portfolio_allocation.current_allocation") %>
+    </span>
+
+    <span class="font-semibold text-blue-400">
+      <%= number_to_percentage(current_percentage, precision: 2) %>
+    </span>
+  </div>
+
+  <%= render Ui::PortfolioAllocation::ProgressBar::Component.new(
+    percentage: current_percentage,
+    color: "bg-blue-500"
+  ) %>
+
+  <div class="flex justify-between text-xs mb-2">
+    <span class="text-slate-400">
+      <%= t("portfolio_allocation.target_allocation") %>
+    </span>
+
+    <span class="font-semibold text-slate-300">
+      <%= number_to_percentage(target_percentage, precision: 2) %>
+    </span>
+  </div>
+
+  <%= render Ui::PortfolioAllocation::ProgressBar::Component.new(
+    percentage: target_percentage,
+    color: "bg-slate-500"
+  ) %>
+</div>

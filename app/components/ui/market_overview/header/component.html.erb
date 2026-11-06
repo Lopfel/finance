@@ -1,0 +1,30 @@
+<div class="flex flex-col xl:flex-row xl:items-center xl:justify-between gap-5 mb-6">
+
+  <div>
+    <h2 class="text-2xl font-bold tracking-tight text-white">
+      <%= t("market_overview.header.title") %>
+    </h2>
+
+    <p class="text-sm text-slate-400 mt-1">
+      <%= t("market_overview.header.subtitle") %>
+    </p>
+  </div>
+
+  <%= form_with url: portfolio_path(portfolio),
+                method: :get,
+                local: true,
+                class: "flex flex-wrap gap-3" do %>
+
+    <%= select_tag :ticker,
+          options_from_collection_for_select(
+            stocks,
+            :ticker,
+            :ticker,
+            selected_stock.ticker
+          ),
+          class: "rounded-xl border border-slate-800 px-4 py-2 text-sm font-semibold text-slate-400",
+          onchange: "this.form.submit()" %>
+
+  <% end %>
+
+</div>
