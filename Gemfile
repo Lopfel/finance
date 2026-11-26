@@ -70,7 +70,7 @@ group :test do
   gem "shoulda-matchers", "~> 8.0"
 end
 
-gem "view_component", "~> 4.20"
+gem "view_component", "~> 4.25"
 
 gem "bcrypt", "~> 3.1"
 
